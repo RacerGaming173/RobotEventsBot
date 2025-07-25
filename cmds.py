@@ -18,7 +18,7 @@ async def on_message(message):
 
     if message.content.startswith('!locals'):
         events_retriever = scraper.RetrieveEventData()
-        events_retriever.params['region'] = 'Texas - Region 4' # Refactor
+        events_retriever.set_query_param('region', 'Texas - Region 4')
         json_events_local = events_retriever.get_events_data()
         events_local = json_events_local['data']
 
@@ -30,6 +30,22 @@ async def on_message(message):
 
             if (grade_level == 'V5RC'):
                 await message.channel.send(embed=format_embed(loc_event))
+
+    if message.content.startswith('!sigs'):
+        events_retriever = scraper.RetrieveEventData()
+        events_retriever.clear_query_param('region')
+        events_retriever.set_query_param('level', 'Signature')
+        json_events_sig = events_retriever.get_events_data()
+        events_sig = json_events_sig['data']
+
+        if not events_sig:
+            await message.channel.send('empty')
+
+        for sig_event in events_sig:
+            grade_level = sig_event['program']['code']
+
+            if (grade_level == 'V5RC'):
+                await message.channel.send(embed=format_embed(sig_event))
 
 def format_embed(event):
     embed = discord.Embed(

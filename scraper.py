@@ -2,7 +2,7 @@ import requests, datetime, json, vars
 
 class RetrieveEventData:
     headers = {
-    'Authorization': 'Bearer ' + vars.robotevents_api_key
+    'Authorization': 'Bearer ' + vars.ROBOTEVENTS_API_KEY
     }
 
     def __init__(self):
@@ -11,7 +11,8 @@ class RetrieveEventData:
         self.params = {
         'start': self.cur_time,
         'per_page': 250,
-        'event_type': 'tournament'
+        'event_type': 'tournament',
+        'season': 197
         }
 
 
@@ -23,7 +24,7 @@ class RetrieveEventData:
             del self.params[key]
 
     def get_events_data(self):
-        r = requests.get(vars.base_robotevents_url + '/events', params=self.params, headers=self.headers)
+        r = requests.get(vars.BASE_ROBOTEVENTS_URL + '/events', params=self.params, headers=self.headers)
         raw_json = json.loads(r.text)
         return raw_json
     

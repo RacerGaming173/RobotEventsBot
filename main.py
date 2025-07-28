@@ -26,4 +26,4 @@ async def sigs(ctx):
 
     await scrollmenu.scrollmenu(bot, ctx, events_retriever)
 
-bot.run(vars.discord_api_key)
+bot.run(vars.DISCORD_API_KEY)

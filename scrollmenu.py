@@ -19,13 +19,14 @@ async def scrollmenu(bot, cmd_context, retriever):
         message = await cmd_context.send(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
         await add_scroll_menu(message, current_page, last_page)
 
-        while (retriever.cur_time - message.created_at) < vars.std_reaction_timeout:
+        while (retriever.cur_time - message.created_at) < vars.DURATION_TILL_TIMEOUT:
 
             def check(reaction, user):
                 return user == cmd_context.author and (reaction.emoji == '⬅️' or reaction.emoji == '➡️')
 
             try:
                 reaction, user = await bot.wait_for('reaction_add', timeout=5, check=check)
+                #await cmd_context.send(f'{grade_level}, {events_sig[current_page]['name']}')
                 if reaction.emoji == '⬅️':
                     current_page-=1
                     await message.edit(embed=format_embed(current_page+1, total_events, events_sig[current_page]))

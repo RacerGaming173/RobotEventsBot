@@ -5,7 +5,7 @@ async def scrollmenu(bot, cmd_context, retriever):
     events_sig = json_events['data']
 
     if not events_sig:
-        await cmd_context.send('empty')
+        await cmd_context.send(embed=format_embed())
         return
     
     page_data = json_events['meta']
@@ -15,7 +15,7 @@ async def scrollmenu(bot, cmd_context, retriever):
 
     grade_level = events_sig[current_page]['program']['code']
 
-    if (grade_level == 'V5RC'): # FIX
+    if (grade_level == 'V5RC'):
         message = await cmd_context.send(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
         await add_scroll_menu(message, current_page, last_page)
 
@@ -26,7 +26,6 @@ async def scrollmenu(bot, cmd_context, retriever):
 
             try:
                 reaction, user = await bot.wait_for('reaction_add', timeout=5, check=check)
-                #await cmd_context.send(f'{grade_level}, {events_sig[current_page]['name']}')
                 if reaction.emoji == '⬅️':
                     current_page-=1
                     await message.edit(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
@@ -42,13 +41,12 @@ async def scrollmenu(bot, cmd_context, retriever):
                 pass
 
             retriever.update_current_time()
-        await cmd_context.send("15 mins elapsed") # Temp
 
-def format_embed(current_page, last_page, event=None):
+def format_embed(current_page=-1, last_page=-1, event=None):
     if event is None:
         embed = discord.Embed(
             description = 'No events were found :(',
-            color = discord.Color.red(), 
+            color = discord.Color.orange(), 
             title = 'Oops....'
         )
     else:

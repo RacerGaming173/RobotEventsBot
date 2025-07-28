@@ -12,6 +12,30 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'We have logged in as {bot.user}')
 
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        embed = discord.Embed(
+                description = 'Invalid command',
+                color = discord.Color.red(), 
+                title = 'Uh oh...'
+            )
+        await ctx.send(embed=embed)
+    elif isinstance(error, commands.MissingRequiredArgument):
+        embed = discord.Embed(
+                description = 'Missing argument',
+                color = discord.Color.red(), 
+                title = 'Uh oh...'
+            )
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(
+                description = 'An error occurred while trying to process command',
+                color = discord.Color.red(), 
+                title = 'Uh oh...'
+            )
+        await ctx.send(embed=embed)
+
 @bot.command()
 async def locals(ctx):
     events_retriever = scraper.RetrieveEventData()

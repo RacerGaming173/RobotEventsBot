@@ -20,9 +20,10 @@ async def scrollmenu(bot, cmd_context, retriever):
         await add_scroll_menu(message, current_page, last_page)
 
         while (retriever.cur_time - message.created_at) < vars.DURATION_TILL_TIMEOUT:
-
+            valid_reactions = ['⬅️', '➡️', '⏪', '⏩']
+            
             def check(reaction, user):
-                return user == cmd_context.author and (reaction.emoji == '⬅️' or reaction.emoji == '➡️')
+                return user == cmd_context.author and reaction.emoji in valid_reactions
 
             try:
                 reaction, user = await bot.wait_for('reaction_add', timeout=5, check=check)
@@ -33,6 +34,16 @@ async def scrollmenu(bot, cmd_context, retriever):
                     await add_scroll_menu(message, current_page, last_page)
                 elif reaction.emoji == '➡️':
                     current_page+=1
+                    await message.edit(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
+                    await message.clear_reactions()
+                    await add_scroll_menu(message, current_page, last_page)
+                elif reaction.emoji == '⏪':
+                    current_page = 0
+                    await message.edit(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
+                    await message.clear_reactions()
+                    await add_scroll_menu(message, current_page, last_page)
+                elif reaction.emoji == '⏩':
+                    current_page = last_page
                     await message.edit(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
                     await message.clear_reactions()
                     await add_scroll_menu(message, current_page, last_page)
@@ -67,5 +78,7 @@ async def add_scroll_menu(msg, current_page, last_page):
     if msg.embeds[0].url:
         if (current_page != 0):
             await msg.add_reaction('⬅️')
+            await msg.add_reaction('⏪')
         if (current_page != last_page):
             await msg.add_reaction('➡️')
+            await msg.add_reaction('⏩')

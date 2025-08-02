@@ -6,7 +6,7 @@ intents.message_content = True
 intents.messages = True
 intents.reactions = True
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='!', help_command=None, intents=intents)
 
 @bot.event
 async def on_ready():
@@ -49,5 +49,15 @@ async def sigs(ctx):
     events_retriever.set_query_param('level', 'Signature')
 
     await scrollmenu.scrollmenu(bot, ctx, events_retriever)
+
+@bot.command()
+async def help(ctx):
+    embed = discord.Embed(
+                description = f'''!locals: Queries list of events in Texas Region 4\n
+                                  !sigs: Queries list of signature events\n
+                                  ''',
+                title = 'Commands List'
+            )
+    await ctx.send(embed=embed)
 
 bot.run(vars.DISCORD_API_KEY)

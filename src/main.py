@@ -1,4 +1,5 @@
 import discord, scrollmenu, scraper, vars
+from aiohttp import web
 from discord.ext import commands
 
 DISCORD_API_KEY = vars.DISCORD_API_KEY
@@ -62,4 +63,13 @@ async def help(ctx):
             )
     await ctx.send(embed=embed)
 
-bot.run(DISCORD_API_KEY)
+# Configure bot to listen on port 8080
+async def health_check(request):
+    return web.Response(text='OK')
+
+app = web.Application()
+app.router.add_get('/', health_check)
+
+if __name__ == '__main__':
+    web.run_app(app, host='0.0.0.0', port=int(vars.PORT))
+    bot.run(DISCORD_API_KEY)

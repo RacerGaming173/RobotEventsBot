@@ -1,5 +1,5 @@
-import discord, scrollmenu, scraper, vars
-from aiohttp import web
+import discord, threading, scrollmenu, scraper, vars
+from flask import Flask
 from discord.ext import commands
 
 DISCORD_API_KEY = vars.DISCORD_API_KEY
@@ -64,12 +64,18 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 # Configure bot to listen on port 8080
-async def health_check(request):
-    return web.Response(text='OK')
+app = Flask('__name__')
 
-app = web.Application()
-app.router.add_get('/', health_check)
+@app.route('/')
+def health_check(request):
+    return 'OK'
+
+def run_flask():
+    """Starts the Flask web server."""
+    app.run(host='0.0.0.0', port=8080)
 
 if __name__ == '__main__':
-    web.run_app(app, host='0.0.0.0', port=8080)
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.start()
+
     bot.run(DISCORD_API_KEY)

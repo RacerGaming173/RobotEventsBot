@@ -71,5 +71,5 @@ app = web.Application()
 app.router.add_get('/', health_check)
 
 if __name__ == '__main__':
-    web.run_app(app, host='0.0.0.0', port=int(vars.PORT))
+    web.run_app(app, host='0.0.0.0', port=8080)
     bot.run(DISCORD_API_KEY)

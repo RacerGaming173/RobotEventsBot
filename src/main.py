@@ -1,6 +1,8 @@
 import discord, scrollmenu, scraper, vars
 from discord.ext import commands
 
+DISCORD_API_KEY = vars.DISCORD_API_KEY
+
 intents = discord.Intents.none()
 intents.message_content = True
 intents.messages = True
@@ -60,4 +62,4 @@ async def help(ctx):
             )
     await ctx.send(embed=embed)
 
-bot.run(vars.DISCORD_API_KEY)
+bot.run(DISCORD_API_KEY)

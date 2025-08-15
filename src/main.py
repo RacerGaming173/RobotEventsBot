@@ -72,8 +72,8 @@ def health_check(request):
 
 @app.before_first_request
 def start_bot_on_gcr():
-    flask_thread = threading.Thread(target=run_flask)
-    flask_thread.start(target=run_bot)
+    flask_thread = threading.Thread(target=run_bot)
+    flask_thread.start()
 
 def run_bot():
     if DISCORD_API_KEY:

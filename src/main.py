@@ -71,11 +71,13 @@ def health_check(request):
     return 'OK'
 
 def run_flask():
-    """Starts the Flask web server."""
     app.run(host='0.0.0.0', port=8080)
 
 if __name__ == '__main__':
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
-
+    if DISCORD_API_KEY:
+        print("Discord token successfully loaded")
+    else:
+        print("Discord token not loaded")
     bot.run(DISCORD_API_KEY)

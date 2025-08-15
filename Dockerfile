@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 COPY src /app
 
 EXPOSE 8080
-CMD ["python", "-u", "main.py"]
+CMD ["gunicorn", "-u", "--bind", "0.0.0.0:8080", "main:app"]

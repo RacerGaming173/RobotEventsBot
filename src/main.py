@@ -70,23 +70,14 @@ app = Flask('__name__')
 def health_check(request):
     return 'OK'
 
-@app.before_first_request
-def start_bot_on_gcr():
-    flask_thread = threading.Thread(target=run_bot)
-    flask_thread.start()
-
-def run_bot():
-    if DISCORD_API_KEY:
-        print("Discord token successfully loaded")
-        bot.run(DISCORD_API_KEY)
-    else:
-        print("Discord token not loaded")
-
-
 def run_flask():
     app.run(host='0.0.0.0', port=8080)
 
 if __name__ == '__main__':
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
+    if DISCORD_API_KEY:
+        print("Discord token successfully loaded")
+    else:
+        print("Discord token not loaded")
     bot.run(DISCORD_API_KEY)

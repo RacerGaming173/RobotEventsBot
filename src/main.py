@@ -80,4 +80,4 @@ if __name__ == '__main__':
         print("Discord token successfully loaded")
     else:
         print("Discord token not loaded")
-    bot.run(DISCORD_API_KEY)
+    bot.run(DISCORD_API_KEY)    

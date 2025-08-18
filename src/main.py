@@ -1,4 +1,4 @@
-import discord, scrollmenu, scraper, vars
+import discord, threading, scrollmenu, scraper, vars
 from flask import Flask
 from discord.ext import commands
 
@@ -70,8 +70,14 @@ app = Flask('__name__')
 def health_check(request):
     return 'OK'
 
+def run_flask():
+    app.run(host='0.0.0.0', port=8080)
+
+
+flask_thread = threading.Thread(target=run_flask)
+flask_thread.start()
 if DISCORD_API_KEY:
     print("Discord token successfully loaded")
 else:
     print("Discord token not loaded")
-bot.run(DISCORD_API_KEY)
+bot.run(DISCORD_API_KEY)    

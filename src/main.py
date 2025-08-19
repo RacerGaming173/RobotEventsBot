@@ -32,7 +32,7 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)
     else:
         embed = discord.Embed(
-                description = 'An error occurred while trying to process command',
+                description = f'An error occurred while trying to process command: {error}',
                 color = discord.Color.red(), 
                 title = 'Uh oh...'
             )

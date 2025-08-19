@@ -1,8 +1,7 @@
-import requests, datetime, json, vars
+import requests, datetime, json
+from vars import ROBOTEVENTS_API_KEY, BASE_ROBOTEVENTS_URL
 
 class RetrieveEventData:
-    ROBOTEVENTS_API_KEY = vars.ROBOTEVENTS_API_KEY
-    BASE_ROBOTEVENTS_URL = vars.BASE_ROBOTEVENTS_URL
 
     headers = {
     'Authorization': 'Bearer ' + ROBOTEVENTS_API_KEY

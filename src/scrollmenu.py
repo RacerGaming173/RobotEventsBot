@@ -1,4 +1,5 @@
-import discord, asyncio, vars
+import discord, asyncio
+from vars import DURATION_TILL_TIMEOUT
 
 async def scrollmenu(bot, cmd_context, retriever):
     json_events = retriever.get_events_data()
@@ -7,7 +8,7 @@ async def scrollmenu(bot, cmd_context, retriever):
     if not events_sig:
         await cmd_context.send(embed=format_embed())
         return
-    
+        
     page_data = json_events['meta']
     current_page = 0
     last_page = page_data['to']-1
@@ -19,7 +20,7 @@ async def scrollmenu(bot, cmd_context, retriever):
         message = await cmd_context.send(embed=format_embed(current_page+1, total_events, events_sig[current_page]))
         await add_scroll_menu(message, current_page, last_page)
 
-        while (retriever.cur_time - message.created_at) < vars.DURATION_TILL_TIMEOUT:
+        while (retriever.cur_time - message.created_at) < DURATION_TILL_TIMEOUT:
             valid_reactions = ['⬅️', '➡️', '⏪', '⏩']
             
             def check(reaction, user):
@@ -77,8 +78,8 @@ def format_embed(current_page=-1, last_page=-1, event=None):
 async def add_scroll_menu(msg, current_page, last_page):
     if msg.embeds[0].url:
         if (current_page != 0):
-            await msg.add_reaction('⬅️')
             await msg.add_reaction('⏪')
+            await msg.add_reaction('⬅️')
         if (current_page != last_page):
             await msg.add_reaction('➡️')
             await msg.add_reaction('⏩')

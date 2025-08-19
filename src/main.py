@@ -1,8 +1,7 @@
-import discord, threading, scrollmenu, scraper, vars
+import discord, threading, scrollmenu, scraper
 from flask import Flask
 from discord.ext import commands
-
-DISCORD_API_KEY = vars.DISCORD_API_KEY
+from vars import ENVIRONMENT, DISCORD_API_KEY
 
 intents = discord.Intents.none()
 intents.message_content = True
@@ -64,20 +63,17 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 # Configure bot to listen on port 8080
-app = Flask('__name__')
+if ENVIRONMENT == 'prod':
+    app = Flask('__name__')
 
-@app.route('/')
-def health_check(request):
-    return 'OK'
+    @app.route('/')
+    def health_check(request):
+        return 'OK'
 
-def run_flask():
-    app.run(host='0.0.0.0', port=8080)
+    def run_flask():
+        app.run(host='0.0.0.0', port=8080)
 
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.start()
 
-flask_thread = threading.Thread(target=run_flask)
-flask_thread.start()
-if DISCORD_API_KEY:
-    print("Discord token successfully loaded")
-else:
-    print("Discord token not loaded")
-bot.run(DISCORD_API_KEY)    
+bot.run(DISCORD_API_KEY)

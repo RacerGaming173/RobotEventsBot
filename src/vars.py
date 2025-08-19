@@ -13,4 +13,4 @@ DISCORD_API_KEY = os.getenv('DISCORD_API_KEY')
 
 # Constants/time vars
 DURATION_TILL_TIMEOUT = datetime.timedelta(minutes=15)
-CURRENT_SEASON_ID = 197 
+CURRENT_SEASON_ID = 197

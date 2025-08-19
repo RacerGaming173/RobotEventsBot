@@ -24,7 +24,7 @@ async def scrollmenu(bot, cmd_context, retriever):
             valid_reactions = ['⬅️', '➡️', '⏪', '⏩']
             
             def check(reaction, user):
-                return user == cmd_context.author and reaction.emoji in valid_reactions
+                return user == cmd_context.author and reaction.emoji in valid_reactions and message == reaction.message
 
             try:
                 reaction, user = await bot.wait_for('reaction_add', timeout=5, check=check)

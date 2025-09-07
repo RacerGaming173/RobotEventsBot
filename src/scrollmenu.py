@@ -1,5 +1,7 @@
-import discord, asyncio
-from vars import DURATION_TILL_TIMEOUT
+import discord, asyncio, datetime
+from haversine import calculate_haversine
+
+DURATION_TILL_TIMEOUT = datetime.timedelta(minutes=15)
 
 async def scrollmenu(bot, cmd_context, retriever):
     json_events = retriever.get_events_data()
@@ -67,7 +69,8 @@ def format_embed(current_page=-1, last_page=-1, event=None):
             description = f'''
             Date: {event['start']}\n
             Location: {event['location']['venue']}\n
-            Address: {event['location']['address_1']}, {event['location']['city']}, {event['location']['region']}, {event['location']['country']}
+            Address: {event['location']['address_1']}, {event['location']['city']}, {event['location']['region']}, {event['location']['country']}\n
+            Approximate distance from Austin: {calculate_haversine(event['location']['coordinates']['lat'], event['location']['coordinates']['lon']):.2f} miles
             ''',
             title = event['name'],
             url = f'https://www.robotevents.com/robot-competitions/vex-robotics-competition/{event['sku']}.html#general-info'

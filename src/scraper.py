@@ -1,5 +1,7 @@
 import requests, datetime, json
-from vars import ROBOTEVENTS_API_KEY, BASE_ROBOTEVENTS_URL
+from globals import ROBOTEVENTS_API_KEY, BASE_ROBOTEVENTS_URL
+
+CURRENT_SEASON_ID = 197
 
 class RetrieveEventData:
 
@@ -14,7 +16,7 @@ class RetrieveEventData:
         'start': self.cur_time,
         'per_page': 250,
         'event_type': 'tournament',
-        'season': 197
+        'season': CURRENT_SEASON_ID
         }
 
 

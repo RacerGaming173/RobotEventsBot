@@ -1,7 +1,7 @@
 import discord, threading, scrollmenu, scraper
 from flask import Flask
 from discord.ext import commands
-from vars import ENVIRONMENT, DISCORD_API_KEY
+from globals import ENVIRONMENT, DISCORD_API_KEY
 
 intents = discord.Intents.none()
 intents.message_content = True

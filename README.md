@@ -13,5 +13,6 @@ In order to get started with this repository:
      - Your RobotEvents API key
      - RobotEvents API endpoint
      - Working environment (For now, this can be set to anything other than 'prod'. This variable is used to deploy the bot on Google Cloud Run)
+4. Inside your Discord server, add your bot and create a channel named "bot-cmds".
 
 Please also install dependencies listed in requirements.txt.

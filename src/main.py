@@ -7,6 +7,7 @@ intents = discord.Intents.none()
 intents.message_content = True
 intents.messages = True
 intents.reactions = True
+intents.guilds = True
 
 bot = commands.Bot(command_prefix='!', help_command=None, intents=intents)
 
@@ -16,51 +17,55 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        embed = discord.Embed(
-                description = 'Invalid command',
-                color = discord.Color.red(), 
-                title = 'Uh oh...'
-            )
-        await ctx.send(embed=embed)
-    elif isinstance(error, commands.MissingRequiredArgument):
-        embed = discord.Embed(
-                description = 'Missing argument',
-                color = discord.Color.red(), 
-                title = 'Uh oh...'
-            )
-        await ctx.send(embed=embed)
-    else:
-        embed = discord.Embed(
-                description = f'An error occurred while trying to process command: {error}',
-                color = discord.Color.red(), 
-                title = 'Uh oh...'
-            )
-        await ctx.send(embed=embed)
+    if ctx.channel.name == 'bot-cmds':
+        if isinstance(error, commands.CommandNotFound):
+            embed = discord.Embed(
+                    description = 'Invalid command',
+                    color = discord.Color.red(), 
+                    title = 'Uh oh...'
+                )
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(
+                    description = 'Missing argument',
+                    color = discord.Color.red(), 
+                    title = 'Uh oh...'
+                )
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                    description = f'An error occurred while trying to process command: {error}',
+                    color = discord.Color.red(), 
+                    title = 'Uh oh...'
+                )
+            await ctx.send(embed=embed)
 
 @bot.command()
 async def locals(ctx):
-    events_retriever = scraper.RetrieveEventData()
-    events_retriever.set_query_param('region', 'Texas - Region 4')
+    if ctx.channel.name == 'bot-cmds':
+        events_retriever = scraper.RetrieveEventData()
+        events_retriever.set_query_param('region', 'Texas - Region 4')
 
-    await scrollmenu.scrollmenu(bot, ctx, events_retriever)
+        await scrollmenu.scrollmenu(bot, ctx, events_retriever)
 
 @bot.command()
 async def sigs(ctx):
-    events_retriever = scraper.RetrieveEventData()
-    events_retriever.set_query_param('level', 'Signature')
+    if ctx.channel.name == 'bot-cmds':
+        events_retriever = scraper.RetrieveEventData()
+        events_retriever.set_query_param('level', 'Signature')
 
-    await scrollmenu.scrollmenu(bot, ctx, events_retriever)
+        await scrollmenu.scrollmenu(bot, ctx, events_retriever)
 
 @bot.command()
 async def help(ctx):
-    embed = discord.Embed(
-                description = f'''!locals: Queries list of events in Texas Region 4\n
-                                  !sigs: Queries list of signature events\n
-                                  ''',
-                title = 'Commands List'
-            )
-    await ctx.send(embed=embed)
+    if ctx.channel.name == 'bot-cmds':
+        embed = discord.Embed(
+                    description = f'''!locals: Queries list of events in Texas Region 4\n
+                                    !sigs: Queries list of signature events\n
+                                    ''',
+                    title = 'Commands List'
+                )
+        await ctx.send(embed=embed)
 
 # Configure bot to listen on port 8080
 if ENVIRONMENT == 'prod':
